@@ -1,0 +1,40 @@
+import UsuarioService from "../services/usuario.service";
+
+import { Request, Response } from "express";
+
+const index = async (req: Request, res: Response) => {
+    try{
+        const usuarios = await UsuarioService.obtenerUsuarios();
+        return res.status(200).json(usuarios);
+    }
+    catch(error: any){
+        res.status(500).json({error: error.message});
+    }
+}
+
+const create = async (req: Request, res: Response) => {
+    try{
+        await UsuarioService.crearUsuario(req.body);
+        return res.status(201).json({message: 'Usuario creado correctamente'});
+    }
+    catch(error: any){
+        res.status(500).json({error: error.message});
+    }
+}
+
+const login = async (req: Request, res: Response) => {
+    try{
+        const token = await UsuarioService.login(req.body.email, req.body.password);
+        if(!token) return res.status(401).json({message: 'Usuario o contraseña incorrectos'});
+        res.setHeader("Set-Cookie", token);
+        res.cookie("token", token);
+        res.send();
+
+        return res.status(200).json({message: 'Login correcto'});
+    }
+    catch(error: any){
+        res.status(500).json({error: error.message});
+    }
+}
+
+export default {index, create, login};
