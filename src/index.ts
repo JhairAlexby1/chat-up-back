@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import '../configs/db.config';
+import './configs/db.config';
 dotenv.config();
 
 const app = express();
@@ -15,7 +15,7 @@ app.use(cors(
 ));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cookieParser())
+app.use(cookieParser());
 import usuarioRouter from './routes/usuario.route';
 import chatRouter from './routes/chat.route';
 import mensajeRouter from './routes/mensaje.route';
