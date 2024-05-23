@@ -9,7 +9,11 @@ export default class UsuarioService
 {
     public static async crearUsuario(usuario: UsuarioType): Promise<void>
     {
-        const nuevoUsuario = new Usuario(usuario);
+        const usuarioHashed = {
+            ...usuario,
+            password: await bcrypt.hash(usuario.password, 10),
+        };
+        const nuevoUsuario = new Usuario(usuarioHashed);
         await nuevoUsuario.save();
     }
 
