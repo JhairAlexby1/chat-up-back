@@ -42,7 +42,7 @@ export default class UsuarioService
 
         usuario.conectado = true;
 
-        const token = jwt.sign({id: usuario._id}, process.env.JWT_SECRET as string, {expiresIn: '1d'});
+        const token = jwt.sign({id: usuario._id, nombre: usuario.nombre, conectado: usuario.conectado, chats: usuario.chats}, process.env.JWT_SECRET as string, {expiresIn: '1d'});
         return serialize('token', token, {
             sameSite: 'none',
             maxAge: 60 * 60 * 1000,
