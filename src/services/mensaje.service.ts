@@ -1,16 +1,20 @@
 import MensajeModel from "../models/mensaje.model";
-import MensajeType from "../types/mensaje.type";
+import ChatModel from "../models/chat.model";
+import {MensajeInputType, MensajeType} from "../types/mensaje.type";
 
 export default class MensajeService
 {
-    public static async crearMensaje(mensaje: MensajeType): Promise<void>
+    public static async crearMensaje(mensaje: MensajeInputType): Promise<void>
     {
         const nuevoMensaje = new MensajeModel(mensaje);
         await nuevoMensaje.save();
+        const chat = await ChatModel.findById(mensaje.chat);
+        chat?.mensajes.push(nuevoMensaje._id);
+        await chat?.save();
     }
 
     public static async obtenerMensajes(): Promise<MensajeType[]>
     {
-        return await MensajeModel.find();
+        return MensajeModel.find();
     }
 }

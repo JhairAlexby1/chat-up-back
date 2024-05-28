@@ -14,7 +14,8 @@ const index = async (req: Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
     try{
-        await MensajeService.crearMensaje(req.body);
+        const {texto, usuario, chat} = req.body;
+        await MensajeService.crearMensaje({texto, usuario, chat});
         return res.status(201).json({message: 'Mensaje creado correctamente'});
     }
     catch(error: any){

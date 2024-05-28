@@ -28,9 +28,9 @@ const login = async (req: Request, res: Response) => {
         if(!token) return res.status(401).json({message: 'Usuario o contraseña incorrectos'});
         res.setHeader("Set-Cookie", token);
         res.cookie("token", token);
-        res.send();
+        res.status(200).send();
 
-        return res.status(200).json({message: 'Login correcto'});
+
     }
     catch(error: any){
         res.status(500).json({error: error.message});

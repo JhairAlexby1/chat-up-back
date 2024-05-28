@@ -1,5 +1,5 @@
 import Usuario from '../models/usuario.model';
-import UsuarioType from '../types/usuario.type';
+import {UsuarioInputType, UsuarioType} from '../types/usuario.type';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
@@ -7,7 +7,7 @@ import {serialize} from "cookie";
 
 export default class UsuarioService
 {
-    public static async crearUsuario(usuario: UsuarioType): Promise<void>
+    public static async crearUsuario(usuario: UsuarioInputType): Promise<void>
     {
         const usuarioHashed = {
             ...usuario,
@@ -19,17 +19,17 @@ export default class UsuarioService
 
     public static async obtenerUsuarioPorEmail(email: string): Promise<UsuarioType | null>
     {
-        return await Usuario.findOne({email});
+        return Usuario.findOne({email});
     }
 
     public static async obtenerUsuarioPorId(id: string): Promise<UsuarioType | null>
     {
-        return await Usuario.findById(id);
+        return Usuario.findById(id);
     }
 
     public static async obtenerUsuarios(): Promise<UsuarioType[]>
     {
-        return await Usuario.find();
+        return Usuario.find();
     }
 
     public static async login(email: string, password: string): Promise<string | null>
