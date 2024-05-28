@@ -25,7 +25,9 @@ const create = async (req: Request, res: Response) => {
 const login = async (req: Request, res: Response) => {
     try{
         const token = await UsuarioService.login(req.body.email, req.body.password);
+
         if(!token) return res.status(401).json({message: 'Usuario o contraseña incorrectos'});
+        res.header("Set-Cookie", token);
         res.setHeader("Set-Cookie", token);
         res.cookie("token", token);
         res.status(200).send();
