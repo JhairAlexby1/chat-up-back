@@ -13,8 +13,8 @@ export default class MensajeService
         await chat?.save();
     }
 
-    public static async obtenerMensajes(): Promise<MensajeType[]>
+    public static async obtenerMensajes(id: string): Promise<MensajeType[]>
     {
-        return MensajeModel.find();
+        return MensajeModel.find({chat: id});
     }
 }
