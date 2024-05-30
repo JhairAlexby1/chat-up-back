@@ -3,13 +3,25 @@ import UsuarioService from "../services/usuario.service";
 import { Request, Response } from "express";
 
 const index = async (req: Request, res: Response) => {
-  try {
-    const usuarios = await UsuarioService.obtenerUsuarios();
-    return res.status(200).json(usuarios);
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-};
+    try{
+        const usuarios = await UsuarioService.obtenerUsuarios();
+        return res.status(200).json(usuarios);
+    }
+    catch(error: any){
+        res.status(500).json({error: error.message});
+    }
+}
+const indexConected = async (req: Request, res: Response) => {
+    try{
+        const usuarios = await UsuarioService.obtenerUsuariosConectados();
+        return res.status(200).json(usuarios);
+    }
+    catch(error: any){
+        res.status(500).json({error: error.message});
+    }
+
+}
+
 
 const create = async (req: Request, res: Response) => {
   try {
@@ -41,4 +53,5 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
-export default { index, create, login };
+export default {index, create, login, indexConected};
+
