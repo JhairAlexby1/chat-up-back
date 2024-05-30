@@ -32,6 +32,11 @@ export default class UsuarioService
         return Usuario.find();
     }
 
+    public static async obtenerUsuariosConectados(): Promise<UsuarioType[]>
+    {
+        return Usuario.find({conectado: true});
+    }
+
     public static async login(email: string, password: string): Promise<string | null>
     {
         const usuario = await this.obtenerUsuarioPorEmail(email);

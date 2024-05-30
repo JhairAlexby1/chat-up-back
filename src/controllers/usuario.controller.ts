@@ -11,6 +11,16 @@ const index = async (req: Request, res: Response) => {
         res.status(500).json({error: error.message});
     }
 }
+const indexConected = async (req: Request, res: Response) => {
+    try{
+        const usuarios = await UsuarioService.obtenerUsuariosConectados();
+        return res.status(200).json(usuarios);
+    }
+    catch(error: any){
+        res.status(500).json({error: error.message});
+    }
+
+}
 
 const create = async (req: Request, res: Response) => {
     try{
@@ -30,7 +40,8 @@ const login = async (req: Request, res: Response) => {
         res.header("Set-Cookie", token);
         res.setHeader("Set-Cookie", token);
         res.cookie("token", token);
-        res.status(200).send();
+        res.send();
+        return res.status(200).json({message: 'Usuario logueado correctamente'});
 
 
     }
@@ -39,4 +50,4 @@ const login = async (req: Request, res: Response) => {
     }
 }
 
-export default {index, create, login};
+export default {index, create, login, indexConected};
