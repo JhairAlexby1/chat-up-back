@@ -22,33 +22,37 @@ const indexConected = async (req: Request, res: Response) => {
 
 }
 
+
 const create = async (req: Request, res: Response) => {
-    try{
-        await UsuarioService.crearUsuario(req.body);
-        return res.status(201).json({message: 'Usuario creado correctamente'});
-    }
-    catch(error: any){
-        res.status(500).json({error: error.message});
-    }
-}
+  try {
+    await UsuarioService.crearUsuario(req.body);
+    return res.status(201).json({ message: "Usuario creado correctamente" });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 const login = async (req: Request, res: Response) => {
-    try{
-        const token = await UsuarioService.login(req.body.email, req.body.password);
+  try {
+    const token = await UsuarioService.login(req.body.email, req.body.password);
 
-        if(!token) return res.status(401).json({message: 'Usuario o contraseña incorrectos'});
-        res.header("Set-Cookie", token);
-        res.setHeader("Set-Cookie", token);
-        res.cookie("token", token);
-        res.send();
-        return res.status(200).json({message: 'Usuario logueado correctamente'});
+    if (!token)
+      return res
+        .status(401)
+        .json({ message: "Usuario o contraseña incorrectos" });
+    res.header("Set-Cookie", token);
+    res.setHeader("Set-Cookie", token);
+    res.cookie("token", token, {
+      httpOnly: false,
+      secure: true,
+      sameSite: "none",
+    });
+    res.status(200).send();
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-
-    }
-    catch(error: any){
-        res.status(500).json({error: error.message});
-    }
-}
 
 const logout = async (req: Request, res: Response) => {
     try{
@@ -62,3 +66,4 @@ const logout = async (req: Request, res: Response) => {
 }
 
 export default {index, create, login, indexConected, logout};
+

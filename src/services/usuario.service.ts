@@ -48,6 +48,8 @@ export default class UsuarioService
         usuario.conectado = true;
         await usuario.save();
 
+        console.log(usuario.conectado);
+
         const token = jwt.sign({id: usuario._id, nombre: usuario.nombre, conectado: usuario.conectado, chats: usuario.chats}, process.env.JWT_SECRET as string, {expiresIn: '1d'});
         return serialize('token', token, {
             sameSite: 'none',
