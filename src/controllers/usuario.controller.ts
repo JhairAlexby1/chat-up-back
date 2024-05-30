@@ -50,4 +50,15 @@ const login = async (req: Request, res: Response) => {
     }
 }
 
-export default {index, create, login, indexConected};
+const logout = async (req: Request, res: Response) => {
+    try{
+        await UsuarioService.logout(req.body.id);
+        return res.status(200).json({message: 'Usuario deslogueado correctamente'});
+    }
+    catch(error: any){
+        res.status(500).json({error: error.message});
+    }
+
+}
+
+export default {index, create, login, indexConected, logout};
