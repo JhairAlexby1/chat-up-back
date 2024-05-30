@@ -17,7 +17,7 @@ export default class UsuarioService
         await nuevoUsuario.save();
     }
 
-    public static async obtenerUsuarioPorEmail(email: string): Promise<UsuarioType | null>
+    public static async obtenerUsuarioPorEmail(email: string): Promise<any | null>
     {
         return Usuario.findOne({email});
     }
@@ -46,6 +46,7 @@ export default class UsuarioService
         if (!esPasswordCorrecto) return null;
 
         usuario.conectado = true;
+        await usuario.save();
 
         console.log(usuario.conectado);
 
@@ -55,6 +56,11 @@ export default class UsuarioService
             maxAge: 60 * 60 * 1000,
             path: '/',
         });
+    }
+
+    public static async logout(id: string): Promise<void>
+    {
+        await Usuario.findByIdAndUpdate(id, {conectado: false});
     }
 }
 
