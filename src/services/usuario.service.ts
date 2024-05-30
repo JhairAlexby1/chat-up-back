@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import {serialize} from "cookie";
 
+
 export default class UsuarioService
 {
     public static async crearUsuario(usuario: UsuarioInputType): Promise<void>
@@ -38,23 +39,23 @@ export default class UsuarioService
     }
 
     public static async login(email: string, password: string): Promise<string | null>
-    {
-        const usuario = await this.obtenerUsuarioPorEmail(email);
-        if (!usuario) return null;
+{
+    const usuario = await this.obtenerUsuarioPorEmail(email);
+    if (!usuario) return null;
 
-        const esPasswordCorrecto = await bcrypt.compare(password, usuario.password);
-        if (!esPasswordCorrecto) return null;
+    const esPasswordCorrecto = await bcrypt.compare(password, usuario.password);
+    if (!esPasswordCorrecto) return null;
 
-        usuario.conectado = true;
+    const usuarioModel = new Usuario(usuario);
+    usuarioModel.conectado = true;
+    await usuarioModel.save();
 
-        console.log(usuario.conectado);
-
-        const token = jwt.sign({id: usuario._id, nombre: usuario.nombre, conectado: usuario.conectado, chats: usuario.chats}, process.env.JWT_SECRET as string, {expiresIn: '1d'});
-        return serialize('token', token, {
-            sameSite: 'none',
-            maxAge: 60 * 60 * 1000,
-            path: '/',
-        });
-    }
+    const token = jwt.sign({id: usuarioModel._id, nombre: usuarioModel.nombre, conectado: usuarioModel.conectado, chats: usuarioModel.chats}, process.env.JWT_SECRET as string, {expiresIn: '1d'});
+    return serialize('token', token, {
+        sameSite: 'none',
+        maxAge: 60 * 60 * 1000,
+        path: '/',
+    });
+}
 }
 
