@@ -12,8 +12,8 @@ wss.on("connection", (ws) => {
         ws.send(JSON.stringify({event: "message send", data: message}));
     });
 
-    ws.on("listening", () => {
-        const mensajes = MensajeService.obtenerMensajes();
+    ws.on("listening", (id: string) => {
+        const mensajes = MensajeService.obtenerMensajes(id);
         ws.send(JSON.stringify({event: "messages", data: mensajes}));
     });
 });
