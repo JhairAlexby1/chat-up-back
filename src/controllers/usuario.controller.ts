@@ -52,6 +52,7 @@ const login = async (req: Request, res: Response) => {
 const logout = async (req: Request, res: Response) => {
     try{
         await UsuarioService.logout(req.body.id);
+        res.clearCookie('token');
         return res.status(200).json({message: 'Usuario deslogueado correctamente'});
     }
     catch(error: any){

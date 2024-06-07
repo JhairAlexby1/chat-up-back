@@ -12,7 +12,7 @@ export const getToken = async (token: string) => {
 
 export const verifyToken = async (req: any, res: any, next: any) => {
     try {
-        const token = req.headers.authorization;
+        const token = req.headers.cookies.token;
         if(!token) return res.status(401).json({message: 'No autorizado'});
         const result = await getToken(token);
         if(result === 'jwt expired') return res.status(401).json({message: 'Token expirado'});
