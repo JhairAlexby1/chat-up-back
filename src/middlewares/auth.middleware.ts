@@ -13,14 +13,17 @@ export const getToken = async (token: string) => {
 
 export const verifyToken = async (req: any, res: any, next: any) => {
     try {
-        const token = req.headers.cookies.token;
-        console.log(token)
+
+        const token = req.cookies['token'];
         if(!token) return res.status(401).json({message: 'No autorizado'});
+
+        console.log(token)
+
         const result = await getToken(token);
         if(result === 'jwt expired') return res.status(401).json({message: 'Token expirado'});
         if(result === 'invalid token') return res.status(401).json({message: 'Token inválido'});
         next();
-    } catch (error: any) {
+    }  catch (error: any) {
         res.status(500).json({error: error.message});
     }
 }
