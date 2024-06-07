@@ -1,5 +1,6 @@
 import UsuarioService from "../services/usuario.service";
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
 let conexionesPendientes: Response[] = [];
 
@@ -45,7 +46,12 @@ const login = async (req: Request, res: Response) => {
 
 const logout = async (req: Request, res: Response) => {
     try {
-        await UsuarioService.logout(req.body.id);
+        const token = req.cookies['token'];
+        if (!token) return res.status(401).json({ message: 'Usuario no logeaado' });
+        const payload: any = jwt.verify(token, process.env.JWT_SECRET as string);
+        console.log(payload);
+
+        await UsuarioService.logout(payload.id);
 
         res.clearCookie('token');
         notificarClientes();
