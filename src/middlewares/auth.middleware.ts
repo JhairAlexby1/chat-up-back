@@ -4,6 +4,7 @@ import 'dotenv/config';
 export const getToken = async (token: string) => {
     try {
         const {result}: any = jwt.verify(token, process.env.SECRET!);
+        console.log(result);
         return result;
     } catch (error) {
         return error;
@@ -13,6 +14,7 @@ export const getToken = async (token: string) => {
 export const verifyToken = async (req: any, res: any, next: any) => {
     try {
         const token = req.headers.cookies.token;
+        console.log(token)
         if(!token) return res.status(401).json({message: 'No autorizado'});
         const result = await getToken(token);
         if(result === 'jwt expired') return res.status(401).json({message: 'Token expirado'});
