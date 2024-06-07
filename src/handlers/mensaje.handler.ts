@@ -12,7 +12,8 @@ wss.on("connection", (ws) => {
         if (messageParsed.event === "message"){
             console.log(messageParsed.data);
             await MensajeService.crearMensaje({texto: messageParsed.data.texto, usuario: messageParsed.data.usuario, chat: messageParsed.data.chat})
-            
+            const mensajes = await MensajeService.obtenerMensajes();
+            ws.send(JSON.stringify({event: "messages", data: mensajes}))
         }
         if (messageParsed.event === "listening")
             {

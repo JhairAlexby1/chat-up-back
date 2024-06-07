@@ -46,10 +46,14 @@ const login = async (req: Request, res: Response) => {
 const logout = async (req: Request, res: Response) => {
     try {
         await UsuarioService.logout(req.body.id);
-        res.status(200).json({ message: 'Usuario deslogueado correctamente' });
+
+        res.clearCookie('token');
         notificarClientes();
+        return  res.status(200).json({ message: 'Usuario deslogueado correctamente' });
+        
     } catch (error: any) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
+
     }
 };
 
