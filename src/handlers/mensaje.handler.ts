@@ -6,14 +6,19 @@ const wss = new WebSocketServer({port: 3030}, () => {console.log("WebSocketServe
 
 wss.on("connection", (ws) => {
     ws.on("message", async (message: any) => {
-        console.log(`Received message => ${message}`);
-        await MensajeService.crearMensaje({texto: message.texto, usuario: message.usuario, chat: message.chat})
-        if (message.event === "message")
-        ws.send(JSON.stringify({event: "message send", data: message}));
-        if (message.event === "listening")
-        {
-            const mensajes = await MensajeService.obtenerMensajes(message.data);
-            ws.send(JSON.stringify({event: "messages", data: mensajes}));
+        const messageParsed = JSON.parse(message);
+        console.log(`Received message => ${messageParsed}`);
+        console.log(messageParsed.event);
+        if (messageParsed.event === "message"){
+            console.log(messageParsed.data);
+            await MensajeService.crearMensaje({texto: messageParsed.data.texto, usuario: messageParsed.data.usuario, chat: messageParsed.data.chat})
+            
         }
+        if (messageParsed.event === "listening")
+            {
+                console.log("Listening");
+                const mensajes = await MensajeService.obtenerMensajes();
+                ws.send(JSON.stringify({event: "messages", data: mensajes}))
+            }
     });
 });
