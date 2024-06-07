@@ -15,12 +15,11 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 import usuarioRouter from './routes/usuario.route';
 import chatRouter from './routes/chat.route';
 import mensajeRouter from './routes/mensaje.route';
-
 
 app.use('/usuarios', usuarioRouter);
 app.use('/chats', chatRouter);
